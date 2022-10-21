@@ -413,13 +413,19 @@ public class Kernel
     // get the full path
     String fullPath = getFullPath( pathname ) ;
 
+    System.out.println("ruta completa: "+fullPath);
+
     StringBuffer dirname = new StringBuffer( "/" ) ;
+    StringBuffer nuevaDir = new StringBuffer("/");
+
     FileSystem fileSystem = openFileSystems[ROOT_FILE_SYSTEM] ;
     IndexNode currIndexNode = getRootIndexNode() ;
     IndexNode prevIndexNode = null ;
     short indexNodeNumber = FileSystem.ROOT_INDEX_NODE_NUMBER ;
 
     StringTokenizer st = new StringTokenizer( fullPath , "/" ) ;
+    StringTokenizer nuevoSt = new StringTokenizer(fullPath, "/");
+
     String name = "." ; // start at root node
     while( st.hasMoreTokens() )
     {
@@ -566,6 +572,24 @@ public class Kernel
     }
     else
     {
+      int p = 1;
+      System.out.println("el archivo ya existe");
+      System.out.println("renombrando el archivo");
+      System.out.println("numero de tokens:"+nuevoSt.countTokens());
+      if (p == 1){
+        while (nuevoSt.hasMoreTokens()){
+          if(nuevoSt.countTokens() == 1){
+            String nd = "/";
+            System.out.println(nuevoSt.getClass());
+            nd = nd.concat(nuevoSt.nextToken()+ "(n)");
+            return creat(nd, mode); 
+          }
+          nuevoSt.nextToken();
+          nuevaDir = nuevaDir.append(nuevoSt.nextToken());
+        }
+
+      }
+
       // file does exist ( indexNodeNumber >= 0 )
 
       // if it's a directory, we can't truncate it
